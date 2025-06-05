@@ -1,0 +1,17 @@
+jatodetinta:sigaa-2p
+laser:bbbbb-7p
+teste:documento-3p
+jatodetinta:abc-2p,sigaa-2p
+teste:xyz-5p,documento-3p
+jatodetinta:aaaaa-6p,abc-2p,sigaa-2p
+laser:bbbbb-3p,bbbbb-7p
+teste:ppapap-1p,xyz-5p,documento-3p
+29p
+ppapap -1p
+bbbbb -3p
+aaaaa -6p
+xyz -5p
+abc -2p
+documento -3p
+bbbbb -7p
+sigaa -2p
