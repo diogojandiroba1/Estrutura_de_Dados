@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-
+#include <inttypes.h>
 
 //Tipo de dado que representa a cada arquivo/elemento
 typedef struct arquivo{
 char nome[50];
 char tipoLeitura[3];
 uint64_t tamanhoArquivo;
-uint16_t id;
+uint64_t id;
 struct arquivo* esquerda;
 struct arquivo* direita;
 } arquivo;
@@ -47,7 +47,7 @@ arvoreBusca->raiz = NULL;
 }
 
 //Função que add elementos a arvore
-void addArquivoArvore(char* nome, char* tipoLeitura, uint64_t tamanhoArquivo, arvore* arvoreBusca, uint16_t* idElemento){
+void addArquivoArvore(char* nome, char* tipoLeitura, uint64_t tamanhoArquivo, arvore* arvoreBusca, uint64_t* idElemento){
 //Caso a raiz seja NULA, arvore vazia    
 if(arvoreBusca->raiz == NULL){
 arquivo* novoArquivo = malloc(sizeof(arquivo));
@@ -101,56 +101,6 @@ pai->esquerda = novoArquivo;
 }
 }
 
-
-void processamento(FILE* input, FILE* output){
-
-//Inicia arvore e variaveis temporarias    
-arvore* arvoreBinaria = malloc(sizeof(arvore));
-iniciaArvore(arvoreBinaria);
-char linha[150];
-char nomeTemp[50];
-char formatoTemp[3];
-uint64_t tamanhoTemp;
-uint64_t qtdArquivos;
-uint16_t idElemento = 0;
-
-//Pega a qtd de arquivos para add
-if (fgets(linha, sizeof(linha), input) == NULL) {
-     printf("Erro na leitura da linha\n");
-    return;
-}
-if(sscanf(linha, "%llu", &qtdArquivos) != 1){
-    printf("Erro ao ler qtd arquivos\n");
-    return;
-}
-
-//Pega linha por linha, processa a linha, e add na arvore
-for(int i = 0; i < qtdArquivos; i++){
-
-if (fgets(linha, sizeof(linha), input) == NULL) {
-     printf("Erro na leitura da linha\n");
-    return;
-}
-formataLinha(nomeTemp, formatoTemp, &tamanhoTemp, linha);
-addArquivoArvore(nomeTemp, formatoTemp, tamanhoTemp, arvoreBinaria, &idElemento);
-idElemento++;
-}
-arquivo* atual = arvoreBinaria->raiz;
-
-//Processamento EPD
-fprintf(output,"[EPD]\n");
-BuscaEmOrdemArvore(atual,output);
-
-//Processamento PED
-fprintf(output,"[PED]\n");
-BuscaPreOrdemArvore(atual,output);
-
-//Processamento EDP
-fprintf(output,"[EDP]\n");
-BuscaPosOrdemArvore(atual,output);
-
-}
-
 //Função recursiva para em Ordem
 void BuscaEmOrdemArvore(arquivo* raizBusca, FILE* output) {
     if (raizBusca == NULL) return;
@@ -158,10 +108,10 @@ void BuscaEmOrdemArvore(arquivo* raizBusca, FILE* output) {
     BuscaEmOrdemArvore(raizBusca->esquerda, output);
 
     if(raizBusca->tamanhoArquivo == 1){
-    fprintf(output, "%d:%s|%s|%llu_byte\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (unsigned long long)raizBusca->tamanhoArquivo);
+    fprintf(output, "%" PRIu64 ":%s|%s|%" PRIu64 "_byte\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (uint64_t)raizBusca->tamanhoArquivo);
     }
     else{
-    fprintf(output, "%d:%s|%s|%llu_bytes\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (unsigned long long)raizBusca->tamanhoArquivo); 
+    fprintf(output, "%" PRIu64 ":%s|%s|%" PRIu64 "_bytes\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (uint64_t)raizBusca->tamanhoArquivo); 
     }
 
     BuscaEmOrdemArvore(raizBusca->direita, output);
@@ -172,10 +122,10 @@ void BuscaPreOrdemArvore(arquivo* raizBusca, FILE* output) {
     if (raizBusca == NULL) return;
 
     if(raizBusca->tamanhoArquivo == 1){
-    fprintf(output, "%d:%s|%s|%llu_byte\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (unsigned long long)raizBusca->tamanhoArquivo);
+    fprintf(output, "%" PRIu64 ":%s|%s|%" PRIu64 "_byte\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (uint64_t)raizBusca->tamanhoArquivo);
     }
     else{
-    fprintf(output, "%d:%s|%s|%llu_bytes\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (unsigned long long)raizBusca->tamanhoArquivo); 
+    fprintf(output, "%" PRIu64 ":%s|%s|%" PRIu64 "_bytes\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (uint64_t)raizBusca->tamanhoArquivo); 
     }
 
     BuscaPreOrdemArvore(raizBusca->esquerda, output);
@@ -190,11 +140,62 @@ void BuscaPosOrdemArvore(arquivo* raizBusca, FILE* output) {
     BuscaPosOrdemArvore(raizBusca->direita, output);
 
     if(raizBusca->tamanhoArquivo == 1){
-    fprintf(output, "%d:%s|%s|%llu_byte\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (unsigned long long)raizBusca->tamanhoArquivo);
+    fprintf(output, "%" PRIu64 ":%s|%s|%" PRIu64 "_byte\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (uint64_t)raizBusca->tamanhoArquivo);
     }
     else{
-    fprintf(output, "%d:%s|%s|%llu_bytes\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (unsigned long long)raizBusca->tamanhoArquivo); 
+    fprintf(output, "%" PRIu64 ":%s|%s|%" PRIu64 "_bytes\n", raizBusca->id, raizBusca->nome, raizBusca->tipoLeitura, (uint64_t)raizBusca->tamanhoArquivo); 
     }
+
+}
+
+
+void processamento(FILE* input, FILE* output){
+
+//Inicia arvore e variaveis temporarias    
+arvore* arvoreBinaria = malloc(sizeof(arvore));
+iniciaArvore(arvoreBinaria);
+char linha[150];
+char nomeTemp[50];
+char formatoTemp[3];
+uint64_t tamanhoTemp = 0;
+uint64_t qtdArquivos;
+uint64_t idElemento = 0;
+
+//Pega a qtd de arquivos para add
+if (fgets(linha, sizeof(linha), input) == NULL) {
+     printf("Erro na leitura da linha\n");
+    return;
+}
+if(sscanf(linha, "%"SCNu64, &qtdArquivos) != 1){
+    printf("Erro ao ler qtd arquivos\n");
+    return;
+}
+
+//Pega linha por linha, processa a linha, e add na arvore
+for(unsigned long long i = 0; i < qtdArquivos; i++){
+
+if (fgets(linha, sizeof(linha), input) == NULL) {
+     printf("Erro na leitura da linha\n");
+    return;
+}
+formataLinha(nomeTemp, formatoTemp, &tamanhoTemp, linha);
+addArquivoArvore(nomeTemp, formatoTemp, tamanhoTemp, arvoreBinaria, &idElemento);
+idElemento++;
+}
+
+arquivo* atual = arvoreBinaria->raiz;
+
+//Processamento EPD
+fprintf(output,"[EPD]\n");
+BuscaEmOrdemArvore(atual,output);
+
+//Processamento PED
+fprintf(output,"[PED]\n");
+BuscaPreOrdemArvore(atual,output);
+
+//Processamento EDP
+fprintf(output,"[EDP]\n");
+BuscaPosOrdemArvore(atual,output);
 
 }
 
