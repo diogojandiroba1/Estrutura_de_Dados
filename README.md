@@ -1,19 +1,10 @@
-# 📊 Projeto de Scraping e Análise de Apostas
+# Projetos de Estruturas De Dados - Diogo Jandiroba
 
-Este projeto foi desenvolvido para realizar **coleta de dados (scraping)** de diversas casas de apostas, **converter e padronizar cotações** e fornecer ferramentas de análise como **cálculo de arbitragem (dutching)** e **cálculo de valor esperado (EV)**.  
+Este repositório contém projetos desenvolvidos na disciplina de Estruturas de Dados, do curso de Engenharia de Computação. Eles estão organizados por unidades.
 
-O objetivo é auxiliar na tomada de decisão em apostas esportivas, criando uma base de dados confiável e organizada.
-
----
-
-## 🚀 Funcionalidades
-
-- 🔍 **Scraping automático** de diferentes casas de apostas.  
-- 📂 Conversão de **JSON → CSV** para padronizar os dados coletados.  
-- 🧮 **Calculadora de Dutching** para arbitragem entre múltiplas casas.  
-- 📈 **Calculadora de EV (Valor Esperado)** para medir se uma aposta é +EV.  
-- ⚙️ Scripts principais para execução e envio de resultados em grupos de Telegram.  
+Cada projeto inclui os códigos-fonte em C e arquivos de entrada/saída usados para testes, incluindo testes com grandes volumes de dados para verificar a eficiência de cada estrutura.
 
 ---
+
 
 
