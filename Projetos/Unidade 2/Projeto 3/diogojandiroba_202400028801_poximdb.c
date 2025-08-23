@@ -51,17 +51,21 @@ BTree* inicia_arvore(int ordem) {
 }
 
 // --- LÓGICA DE BUSCA ---
+// Versão CORRETA do seu código
 node* search(node* x, const char* chave) {
     int i = 0;
     while (i < x->qtd_chaves_atual && strcmp(chave, x->chaves[i].hash) > 0) {
         i++;
     }
+    // Se encontrar a chave exata, retorna o nó.
     if (i < x->qtd_chaves_atual && strcmp(chave, x->chaves[i].hash) == 0) {
         return x;
     }
+    // Se for uma folha e não encontrou, a chave não existe. Retorna NULL.
     if (x->is_folha) {
         return NULL;
     }
+    // Caso contrário, desce para a subárvore apropriada.
     return search(x->ArrayPonteiros[i], chave);
 }
 

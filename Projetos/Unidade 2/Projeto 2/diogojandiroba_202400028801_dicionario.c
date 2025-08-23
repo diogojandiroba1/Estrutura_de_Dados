@@ -146,7 +146,7 @@ return createNewNode(word, synonums_array, qtd_synonums);
 int cmp = strcmp(word, current_node->key_word);
 
 if(cmp == 0){
-    current_node->left = addNode(current_node->left, word, synonums_array, qtd_synonums);
+    
 }
 if(cmp < 0){
     current_node->left = addNode(current_node->left, word, synonums_array, qtd_synonums);
@@ -306,6 +306,7 @@ for(int i = 0; i < searchedNode->qtd_synonyms; i++){
 }
 
 freeTree(Tree->root);
+
 }
 
 
